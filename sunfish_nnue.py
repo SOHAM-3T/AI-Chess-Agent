@@ -670,8 +670,8 @@ if '--profile' in sys.argv:
                 break
     cProfile.run('go_depth_5()')
 else:
-    import tools.uci
-    tools.uci.run(sys.modules[__name__], hist[-1])
+    import sunfish_uci
+    sunfish_uci.run(sys.modules[__name__], hist[-1])
 sys.exit()
 # minifier-hide end
 
