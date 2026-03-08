@@ -1,4 +1,4 @@
-# Chess Agengt with Web GUI
+# Chess Agent with Web GUI
 
 Ths is a simple, but strong chess engine, written in Python. This repository now includes a modern Web GUI to play against the engine easily.
 
