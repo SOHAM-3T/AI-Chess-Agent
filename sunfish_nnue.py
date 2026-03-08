@@ -278,7 +278,7 @@ class Position(namedtuple("Position", "board score wf bf wc bc ep kp")):
         # Pytorch matrices are in the shape (out_features, in_features)
         #hidden = layer1 @ act(np.concatenate([wf[1:], bf[1:]]))
         hidden = (layer1[:,:9] @ act(wf[1:])) + (layer1[:,9:] @ act(bf[1:]))
-        score = layer2 @ act(hidden)
+        score = (layer2 @ act(hidden)).item()
         #if verbose:
         #    print(f"Score: {score + model['scale'] * (wf[0] - bf[0])}")
         #    print(f"from model: {score}, pieces: {wf[0]-bf[0]}")
@@ -357,7 +357,7 @@ class MutablePosition(namedtuple("Position", "board score wf bf wc bc ep kp")):
     def rotate(self, nullmove=False):
         # Rotates the board, preserving enpassant.
         # A nullmove is nearly a rotate, but it always clear enpassant.
-        pos = Position(
+        pos = MutablePosition(
             self.board[::-1].swapcase(),
             0, self.bf, self.wf, self.bc, self.wc,
             0 if nullmove or not self.ep else 119 - self.ep,
@@ -445,7 +445,7 @@ class MutablePosition(namedtuple("Position", "board score wf bf wc bc ep kp")):
         # Pytorch matrices are in the shape (out_features, in_features)
         #hidden = layer1 @ act(np.concatenate([wf[1:], bf[1:]]))
         hidden = (layer1[:,:9] @ act(wf[1:])) + (layer1[:,9:] @ act(bf[1:]))
-        score = layer2 @ act(hidden)
+        score = (layer2 @ act(hidden)).item()
         #if verbose:
         #    print(f"Score: {score + model['scale'] * (wf[0] - bf[0])}")
         #    print(f"from model: {score}, pieces: {wf[0]-bf[0]}")
@@ -460,6 +460,10 @@ class MutablePosition(namedtuple("Position", "board score wf bf wc bc ep kp")):
         return hash((self.board, self.wc, self.bc, self.ep, self.kp))
         # return (self.wf + self.bf).sum()
         # return self._replace(wf=0, bf=0)
+
+
+# Keep external callers on the stable NNUE position implementation.
+Position = MutablePosition
 
 
 ###############################################################################
@@ -657,7 +661,7 @@ def render(i):
 
 
 wf, bf = features(initial)
-hist = [Position(initial, 0, wf, bf, (True, True), (True, True), 0, 0)]
+hist = [MutablePosition(initial, 0, wf, bf, (True, True), (True, True), 0, 0)]
 searcher = Searcher()
 
 

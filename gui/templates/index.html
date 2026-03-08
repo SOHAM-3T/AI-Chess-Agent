@@ -56,6 +56,11 @@
     <div id="board"></div>
     <div id="status">White to move</div>
     <div class="controls">
+        <label for="engineSelect">Engine:</label>
+        <select id="engineSelect">
+            <option value="sunfish">Sunfish (Classic)</option>
+            <option value="nnue">Sunfish NNUE</option>
+        </select>
         <button id="newGameWhiteBtn">New Game (White)</button>
         <button id="newGameBlackBtn">New Game (Black)</button>
     </div>
@@ -100,7 +105,10 @@
                 type: "POST",
                 url: "/move",
                 contentType: "application/json",
-                data: JSON.stringify({ move: move.from + move.to + (move.promotion ? move.promotion : '') }),
+                data: JSON.stringify({
+                    move: move.from + move.to + (move.promotion ? move.promotion : ''),
+                    engine: $('#engineSelect').val()
+                }),
                 success: function (response) {
                     if (response.engine_move) {
                         game.move({
@@ -159,7 +167,7 @@
                 type: "POST",
                 url: "/newgame",
                 contentType: "application/json",
-                data: JSON.stringify({ color: color }),
+                data: JSON.stringify({ color: color, engine: $('#engineSelect').val() }),
                 success: function (response) {
                     game.reset();
                     if (response.engine_move) {

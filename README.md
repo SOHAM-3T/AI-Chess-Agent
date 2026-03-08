@@ -1,8 +1,6 @@
-![Sunfish logo](https://raw.github.com/thomasahle/sunfish/master/docs/logo/sunfish_large.png)
+# Chess Agengt with Web GUI
 
-# Sunfish Chess with Web GUI
-
-Sunfish is a simple, but strong chess engine, written in Python. This repository now includes a modern Web GUI to play against the engine easily.
+Ths is a simple, but strong chess engine, written in Python. This repository now includes a modern Web GUI to play against the engine easily.
 
 ## Quick Start (Play Game)
 
@@ -18,7 +16,7 @@ This will launch a web server and automatically open the game in your browser.
 
 -   **Clean Web Interface**: Play using drag-and-drop on a graphical board.
 -   **Color Selection**: Play as White or Black.
--   **Strong Engine**: Uses the Sunfish engine (approx. 2000+ ELO on Lichess).
+-   **Strong Engine**: Uses the Sunfish Chess engine (approx. 2000+ ELO on Lichess).
 -   **NNUE Support**: Includes an experimental neural network version (`sunfish_nnue.py`).
 
 ## Project Structure
@@ -45,11 +43,3 @@ To experiment with the neural network version:
 python sunfish_nnue.py nnue/models/tanh.pickle
 ```
 
-## Credits
-
-Original Sunfish by [Thomas Ahle](https://github.com/thomasahle/sunfish).
-Web GUI and refactoring by [Your Name/Assistant].
-
-## License
-
-GNU GPL v3

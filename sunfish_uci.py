@@ -43,7 +43,7 @@ def go_loop(searcher, hist, stop_event, max_movetime=0, max_depth=0, debug=False
             "depth": depth,
             "time": round(1000 * elapsed),
             "nodes": searcher.nodes,
-            "nps": round(searcher.nodes / elapsed),
+            "nps": round(searcher.nodes / max(elapsed, 1e-9)),
         }
         if score >= gamma:
             fields["score cp"] = f"{score} lowerbound"
@@ -285,8 +285,9 @@ def from_fen(board, color, castling, enpas, _hclock, _fclock):
     ep = sunfish.parse(enpas) if enpas != "-" else 0
     if hasattr(sunfish, 'features'):
         wf, bf = sunfish.features(board)
-        pos = sunfish.Position(board, 0, wf, bf, wc, bc, ep, 0)
-        pos = pos._replace(score=pos.calculate_score())
+        pos_type = getattr(sunfish, "MutablePosition", sunfish.Position)
+        pos = pos_type(board, 0, wf, bf, wc, bc, ep, 0)
+        pos = pos._replace(score=pos.compute_value())
     else:
         score = sum(sunfish.pst[c][i] for i, c in enumerate(board) if c.isupper())
         score -= sum(sunfish.pst[c.upper()][119-i] for i, c in enumerate(board) if c.islower())
